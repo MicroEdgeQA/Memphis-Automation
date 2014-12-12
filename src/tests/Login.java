@@ -30,7 +30,7 @@ public class Login
 		
 		driver.findElement(By.id(prop.getProperty("userIDField"))).sendKeys("admin");
 		driver.findElement(By.id(prop.getProperty("passwordField"))).sendKeys("microedge");
-		driver.findElement(By.id(prop.getProperty("loginButton"))).click();
+		driver.findElement(By.className(prop.getProperty("loginButton"))).click();
 	}
 	
 	@Test(description="Missing User ID")
