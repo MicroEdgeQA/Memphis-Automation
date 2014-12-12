@@ -27,11 +27,11 @@ public class Util {
 	 * 
 	 * @return Properties object with content from properties file loaded.
 	 */
-	public static Properties getPageProperties(){
+	public static Properties getPageProperties(String page){
 		
 		Properties prop = new Properties();
 		InputStream input = null;
-		String propertyFile = "./LoginPage.properties";
+		String propertyFile = "./" + page + ".properties";
 		
 		try{
 			input = new FileInputStream(propertyFile);
