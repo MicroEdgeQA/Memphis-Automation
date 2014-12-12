@@ -11,9 +11,14 @@
 
   <test name="Automation Test" preserve-order="true"> 
    <classes>
-   <class name="site.Login">
+   <class name="tests.Login">
    <methods>
-   <include name="systemLogin" />
+   <include name="loginSuccessful" />
+   <include name="missingUserID" />
+   <include name="incorrectUserIDPassword" />
+   <include name="forgotPassword" />
+   <include name="header" />
+   <include name="footer" />
    </methods>
    </class>
    </classes>
