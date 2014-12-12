@@ -16,9 +16,6 @@
    <include name="loginSuccessful" />
    <include name="missingUserID" />
    <include name="incorrectUserIDPassword" />
-   <include name="forgotPassword" />
-   <include name="header" />
-   <include name="footer" />
    </methods>
    </class>
    </classes>
