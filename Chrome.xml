@@ -1,0 +1,22 @@
+<suite name="Automated Test Results" verbose="10">
+
+<parameter name="browser"            value="Chrome"/>
+<parameter name="dataLocation"       value="C:\Users\mdauria\workspace\AutomationTest"/>
+<parameter name="screenshotLocation" value="C:\Screenshots"/>
+
+<listeners>
+      <listener class-name="org.uncommons.reportng.HTMLReporter"/>
+      <listener class-name="org.uncommons.reportng.JUnitXMLReporter"/>     
+</listeners>
+
+  <test name="Automation Test" preserve-order="true"> 
+   <classes>
+   <class name="site.Login">
+   <methods>
+   <include name="systemLogin" />
+   </methods>
+   </class>
+   </classes>
+  </test>
+  
+</suite>
