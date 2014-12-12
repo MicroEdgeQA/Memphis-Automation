@@ -1,17 +1,20 @@
 package tests;
 
-import common.Browser;
-import common.Util;
-
+import java.util.List;
 import java.util.Properties;
 
 import org.junit.Assert;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+
+import common.Browser;
+import common.Util;
 
 public class Login
 {		
@@ -104,7 +107,9 @@ public class Login
 	{
 		launchSite();
 		
-		driver.findElement(By.xpath(prop.getProperty("forgotPasswordLink"))).click();
+		WebElement forgotPasswordLink = driver.findElements(By.tagName("a")).get(1);
+		JavascriptExecutor exec = (JavascriptExecutor)driver;
+		exec.executeScript("arguments[0].click()", forgotPasswordLink);
 		Browser.pause(2);
 	}
 	
