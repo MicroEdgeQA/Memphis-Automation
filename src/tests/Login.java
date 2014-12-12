@@ -1,5 +1,6 @@
 package tests;
 
+import common.Browser;
 import common.Util;
 
 import java.util.Properties;
@@ -27,7 +28,7 @@ public class Login
 	@AfterClass
 	public void closeBrowser()
 	{
-		driver.quit();
+		//driver.quit();
 	}
 	
 	@BeforeMethod
@@ -36,7 +37,7 @@ public class Login
 		Assert.assertEquals(Util.IsDOMReady(driver), true);
 	}
 	
-	@Test(description="Successful Login")
+	@Test(enabled = false, description="Successful Login")
 	public void loginSuccessful()
 	{	
 		launchSite();
@@ -71,7 +72,7 @@ public class Login
 		driver.findElement(By.className(prop.getProperty("loginButton"))).click();
 	}
 	
-	@Test(description="Missing User ID")
+	@Test(enabled = false, description="Missing User ID")
 	public void missingUserID()
 	{	
 		launchSite();
@@ -83,7 +84,7 @@ public class Login
 		Assert.assertEquals(userIDRequiredExpected, userIDRequiredActual);
 	}
 	
-	@Test(description="Incorrect User ID or Password")
+	@Test(enabled = false, description="Incorrect User ID or Password")
 	public void incorrectUserIDPassword()
 	{	
 		launchSite();
@@ -96,4 +97,33 @@ public class Login
 		String incorrectUserIDPasswordActual = driver.findElement(By.xpath(prop.getProperty("incorrectUserIDPassword"))).getText();
 		Assert.assertEquals(incorrectUserIDPasswordExpected, incorrectUserIDPasswordActual);
 	}
+
+
+	@Test
+	public void ForgotPasswordLink()
+	{
+		launchSite();
+		
+		driver.findElement(By.xpath(prop.getProperty("forgotPasswordLink"))).click();
+		Browser.pause(2);
+	}
+	
 }
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
