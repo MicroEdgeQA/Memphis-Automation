@@ -31,7 +31,7 @@ public class Util {
 		
 		Properties prop = new Properties();
 		InputStream input = null;
-		String propertyFile = "src/UI Map/Login.properties";
+		String propertyFile = "./LoginPage.properties";
 		
 		try{
 			input = new FileInputStream(propertyFile);
