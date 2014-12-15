@@ -36,9 +36,8 @@ public class Screenshots
 	{      
 		// Takes a screenshot and saves it to a file
 		// The directory name used to store the screenshot files is generated randomly to not overwrite previous executions
-		// timestamp = System.currentTimeMillis();
-		
-		DateFormat dateFormat = new SimpleDateFormat("EEE_MMM d_yyyy_");
+			
+		DateFormat dateFormat = new SimpleDateFormat("EEE_MMM_d_yyyy_");
 		Date dateTime = new Date();
 		String day = dateFormat.format(dateTime);
 		dateFormat = new SimpleDateFormat("hh_mm_a");
