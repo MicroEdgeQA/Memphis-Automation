@@ -40,7 +40,7 @@ public class Screenshots
 		DateFormat dateFormat = new SimpleDateFormat("EEE_MMM_d_yyyy_");
 		Date dateTime = new Date();
 		String day = dateFormat.format(dateTime);
-		dateFormat = new SimpleDateFormat("hh_mm_a");
+		dateFormat = new SimpleDateFormat("hh_mm_ss_a");
 		String date = dateFormat.format(dateTime);
 		
 		File screenshot = ((TakesScreenshot)Browser.driver).getScreenshotAs(OutputType.FILE);
