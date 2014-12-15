@@ -26,15 +26,19 @@ public class Login
 	private Properties prop;
 		
 	@AfterClass
-	public void closeBrowser()
+	public void afterClass()
 	{
 		Browser.driver.quit();
 	}
 	
 	@BeforeMethod
-	public void checkPageLoaded()
+	public void beforeMethod()
 	{
+		// Make sure page is ready
 		Assert.assertEquals(Util.IsDOMReady(Browser.driver), true);
+		
+		// Reset check variables
+		Checkpoints.testPassed = true;
 	}
 	
 	@Parameters({"browser", "dataLocation", "screenshotLocation"})
@@ -58,8 +62,6 @@ public class Login
 	@Test(enabled = true, description="Successful Login", dataProvider="Iteration")
 	public void loginSuccessful(String rowForIteration, String iterationDescription)
 	{	
-		Checkpoints.testPassed = true;
-		
 		Hashtable<String, Integer> column;
 		int dataRowFromSheet = Integer.parseInt(rowForIteration);
 		
@@ -101,14 +103,12 @@ public class Login
 		// Click Login button
 		Browser.driver.findElement(By.className(prop.getProperty("loginButton"))).click();
 		
-		Checkpoints.failureHandler(Checkpoints.testPassed);
+		Checkpoints.failureHandler();
 	}
 	
 	@Test(enabled = true, description="Missing User ID", dataProvider="Iteration")
 	public void missingUserID(String rowForIteration, String iterationDescription)
-	{	
-		Checkpoints.testPassed = true;
-		
+	{			
 		Hashtable<String, Integer> column;
 		int dataRowFromSheet = Integer.parseInt(rowForIteration);
 		
@@ -125,14 +125,12 @@ public class Login
 		String userIDRequiredActual = Browser.driver.findElement(By.className(prop.getProperty("userIDRequired"))).getText();
 		Checkpoints.check(userIDRequiredExpected, userIDRequiredActual, "Missing User ID Text");
 		
-		Checkpoints.failureHandler(Checkpoints.testPassed);
+		Checkpoints.failureHandler();
 	}
 	
 	@Test(enabled = true, description="Incorrect User ID or Password", dataProvider="Iteration")
 	public void incorrectUserIDPassword(String rowForIteration, String iterationDescription)
 	{	
-		Checkpoints.testPassed = true;
-		
 		Hashtable<String, Integer> column;
 		int dataRowFromSheet = Integer.parseInt(rowForIteration);
 		
@@ -154,14 +152,12 @@ public class Login
 		String incorrectUserIDPasswordActual = Browser.driver.findElement(By.xpath(prop.getProperty("incorrectUserIDPassword"))).getText();
 		Checkpoints.check(incorrectUserIDPasswordExpected, incorrectUserIDPasswordActual, "Incorrect User ID or Password Text");
 		
-		Checkpoints.failureHandler(Checkpoints.testPassed);
+		Checkpoints.failureHandler();
 	}
 
 	@Test(enabled = true, description="Forgot Password", dataProvider="Iteration")
 	public void forgotPasswordLink(String rowForIteration, String iterationDescription)
 	{
-		Checkpoints.testPassed = true;
-		
 		Hashtable<String, Integer> column;
 		int dataRowFromSheet = Integer.parseInt(rowForIteration);
 		
@@ -175,6 +171,6 @@ public class Login
 		exec.executeScript("arguments[0].click()", forgotPasswordLink);
 		Browser.pause(5);
 		
-		Checkpoints.failureHandler(Checkpoints.testPassed);
+		Checkpoints.failureHandler();
 	}	
 }

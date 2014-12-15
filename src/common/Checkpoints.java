@@ -37,12 +37,12 @@ public class Checkpoints
 		if (Screenshots.takeScreenshot) Screenshots.screenshot();
 	}
 	
-	public static void failureHandler(boolean testPassed)
+	public static void failureHandler()
 	{
 		// Must be last line of a test to avoid an assertion from halting test execution
 		// Failed checks will set testPassed variable to false which will trigger
 		// failed assertion to flag test iteration as failed in results report
-		// Tests must initialize testPassed to true and end by passing testPassed to the failureHandler method
+		// Tests must have the testPassed variable initialized to true and end by calling the failureHandler method
 		if (!testPassed)
 		{
 			Reporter.log("* One or more FAILURES have occurred in this test iteration!  Please examine the results.");

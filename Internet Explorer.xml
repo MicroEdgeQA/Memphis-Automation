@@ -1,6 +1,6 @@
-<suite name="MicroEdge Memphis Automated Test - Firefox" verbose="10">
+<suite name="MicroEdge Memphis Automated Test - MSIE" verbose="10">
 
-<parameter name="browser"            value="Firefox"/>
+<parameter name="browser"            value="Internet Explorer"/>
 <parameter name="dataLocation"       value="H:\git\Memphis-Automation"/>
 <parameter name="screenshotLocation" value="C:\Screenshots"/>
 
