@@ -59,6 +59,34 @@ public class Login
 	    return(rowForIteration);
 	}
 	
+	@Test(enabled = true, description="Header and Footer", dataProvider="Iteration")
+	public void headerFooter(String rowForIteration, String iterationDescription)
+	{			
+		Hashtable<String, Integer> column;
+		int dataRowFromSheet = Integer.parseInt(rowForIteration);
+		
+		String[][] HeaderFooter = DataDriver.getData("Site");
+		column = DataDriver.getColumnNamesFromSheet("Site");
+		String siteURL = HeaderFooter[dataRowFromSheet][column.get("Site URL")];		
+		Browser.launchSite(siteURL);
+		
+		prop = Util.getPageProperties("LoginPage");
+		
+		String[][] headerFooter = DataDriver.getData("LoginHeaderFooter");
+		column = DataDriver.getColumnNamesFromSheet("LoginHeaderFooter");
+		
+		// Check Header and Footer text
+		String loginHeaderExpected = headerFooter[dataRowFromSheet][column.get("Header Text")];
+		String loginHeaderActual = Browser.driver.findElement(By.className(prop.getProperty("header"))).getText();
+		Checkpoints.check(loginHeaderExpected, loginHeaderActual, "Login Page Header Text");
+		
+		String footerExpected = headerFooter[dataRowFromSheet][column.get("Footer Text")];
+		String footerActual = Browser.driver.findElement(By.xpath(prop.getProperty("footer"))).getText();
+		Checkpoints.check(footerExpected, footerActual, "Login Page Footer Text");
+		
+		Checkpoints.failureHandler();
+	}
+	
 	@Test(enabled = true, description="Successful Login", dataProvider="Iteration")
 	public void loginSuccessful(String rowForIteration, String iterationDescription)
 	{	
@@ -192,6 +220,22 @@ public class Login
 		String expectedTitle = prop.getProperty("forgotPasswordPageTitle");
 		String actualTitle = Browser.driver.getTitle();
 		Checkpoints.check(actualTitle, expectedTitle, "Forgot Password Page Title");
+		
+		String[][] headerFooter = DataDriver.getData("ForgotPasswordHeaderFooter");
+		column = DataDriver.getColumnNamesFromSheet("ForgotPasswordHeaderFooter");
+		
+		// Check Header and Footer text
+		String forgotPasswordHeaderExpected1 = headerFooter[dataRowFromSheet][column.get("Header Text 1")];
+		String forgotPasswordHeaderActual1 = Browser.driver.findElement(By.className(prop.getProperty("header1"))).getText();
+		Checkpoints.check(forgotPasswordHeaderExpected1, forgotPasswordHeaderActual1, "Forgot Password Page Header 1 Text");
+		
+		String forgotPasswordHeaderExpected2 = headerFooter[dataRowFromSheet][column.get("Header Text 2")];
+		String forgotPasswordHeaderActual2 = Browser.driver.findElement(By.xpath(prop.getProperty("header2"))).getText();
+		Checkpoints.check(forgotPasswordHeaderExpected2, forgotPasswordHeaderActual2, "Forgot Password Page Header 2 Text");
+		
+		String forgotPasswordFooterExpected = headerFooter[dataRowFromSheet][column.get("Footer Text")];
+		String forgotPasswordFooterActual = Browser.driver.findElement(By.xpath(prop.getProperty("footer"))).getText();
+		Checkpoints.check(forgotPasswordFooterExpected, forgotPasswordFooterActual, "Forgot Password Page Footer Text");
 		
 		Checkpoints.failureHandler();
 	}	
