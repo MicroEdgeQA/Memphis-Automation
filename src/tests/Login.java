@@ -1,6 +1,5 @@
 package tests;
 
-import java.util.List;
 import java.util.Properties;
 
 import org.junit.Assert;
@@ -31,7 +30,7 @@ public class Login
 	@AfterClass
 	public void closeBrowser()
 	{
-		//driver.quit();
+		driver.quit();
 	}
 	
 	@BeforeMethod
