@@ -73,6 +73,10 @@ public class Login
 		
 		prop = Util.getPageProperties("LoginPage");
 		
+		String expectedTitle = prop.getProperty("loginPageTitle");
+		String actualTitle = Browser.driver.getTitle();
+		Checkpoints.check(actualTitle, expectedTitle, "Login Page Title");		
+		
 		String[][] LoginSuccessful = DataDriver.getData("LoginSuccessful");
 		column = DataDriver.getColumnNamesFromSheet("LoginSuccessful");
 		
@@ -148,6 +152,7 @@ public class Login
 		
 		Browser.driver.findElement(By.id(prop.getProperty("userIDField"))).sendKeys(userID);
 		Browser.driver.findElement(By.className(prop.getProperty("loginButton"))).click();
+		Browser.pause(5);
 		
 		String incorrectUserIDPasswordActual = Browser.driver.findElement(By.xpath(prop.getProperty("incorrectUserIDPassword"))).getText();
 		Checkpoints.check(incorrectUserIDPasswordExpected, incorrectUserIDPasswordActual, "Incorrect User ID or Password Text");
@@ -166,10 +171,16 @@ public class Login
 		String siteURL = Site[dataRowFromSheet][column.get("Site URL")];		
 		Browser.launchSite(siteURL);
 		
+		prop = Util.getPageProperties("ForgotPasswordPage");
+		
 		WebElement forgotPasswordLink = Browser.driver.findElements(By.tagName("a")).get(1);
 		JavascriptExecutor exec = (JavascriptExecutor)Browser.driver;
 		exec.executeScript("arguments[0].click()", forgotPasswordLink);
 		Browser.pause(5);
+		
+		String expectedTitle = prop.getProperty("forgotPasswordPageTitle");
+		String actualTitle = Browser.driver.getTitle();
+		Checkpoints.check(actualTitle, expectedTitle, "Forgot Password Page Title");
 		
 		Checkpoints.failureHandler();
 	}	
