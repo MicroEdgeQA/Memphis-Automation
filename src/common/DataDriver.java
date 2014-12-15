@@ -16,7 +16,6 @@ public class DataDriver
 	static String dataSource = null;
 	
 	// Number of rows and columns in data sheet
-	// Must be public.  There are times when these variables may need to be accessible.
 	public static int numColumns;
 	public static int numRows;
 	
@@ -27,6 +26,21 @@ public class DataDriver
 	public static void assignDataSource(String dataLocation, String testName)
 	{
 		dataSource = dataLocation + "\\" + testName + ".xlsx";
+	}
+	
+	// Passes name of data sheet into method which then calls method to read its data
+	public static String[][] getData(String dataSheet)
+	{
+		// Specify data to be retrieved into an array
+		String[][] dataForTest = null;
+		
+		try {
+				dataForTest = (getDataSheet(dataSheet));
+			} catch (IOException e)
+				{
+					System.out.println("Problem getting data from spreadsheet!");
+				}
+		return dataForTest;
 	}
 	
 	// Reads data from sheet
@@ -62,6 +76,21 @@ public class DataDriver
 			}
 		}
 		return dataForTest;
+	}
+	
+	// Passes name of data sheet into method which then calls method to read its column names
+	public static String[] getDataColumns(String dataSheet)
+	{
+		// Specify data to be retrieved into an array
+		String[] dataColumnsForTest = null;
+		
+		try {
+				dataColumnsForTest = (getDataSheetColumns(dataSheet));
+			} catch (IOException e)
+				{
+					System.out.println("Problem getting data from spreadsheet!");
+				}
+		return dataColumnsForTest;
 	}
 	
 	// Reads the column names from a data sheet
@@ -106,35 +135,5 @@ public class DataDriver
 		}
 		
 		return columnNamesHash;
-	}
-	
-	// Passes name of data sheet into method which then calls method to read its data
-	public static String[][] getData(String dataSheet)
-	{
-		// Specify data to be retrieved into an array
-		String[][] dataForTest = null;
-		
-		try {
-				dataForTest = (getDataSheet(dataSheet));
-			} catch (IOException e)
-				{
-					System.out.println("Problem getting data from spreadsheet!");
-				}
-		return dataForTest;
-	}
-	
-	// Passes name of data sheet into method which then calls method to read its column names
-	public static String[] getDataColumns(String dataSheet)
-	{
-		// Specify data to be retrieved into an array
-		String[] dataColumnsForTest = null;
-		
-		try {
-				dataColumnsForTest = (getDataSheetColumns(dataSheet));
-			} catch (IOException e)
-				{
-					System.out.println("Problem getting data from spreadsheet!");
-				}
-		return dataColumnsForTest;
 	}
 }

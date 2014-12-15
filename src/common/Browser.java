@@ -53,14 +53,10 @@ public class Browser
 	public static void launchSite(String site)
 	{
 		driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+		driver.get("about:blank");
 		driver.get(site);
 	}
-	
-	public static void closeWebDriver(WebDriver webDriver) throws IOException
-	{
-		webDriver.close();
-	}
-	
+		
 	public static void clickLinkByHref(String href)
 	{
 		try
