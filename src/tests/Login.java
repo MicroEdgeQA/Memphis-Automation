@@ -106,6 +106,13 @@ public class Login
 		
 		// Click Login button
 		Browser.driver.findElement(By.className(prop.getProperty("loginButton"))).click();
+		Browser.pause(5);
+		
+		prop = Util.getPageProperties("DashboardPage");
+		
+		expectedTitle = prop.getProperty("dashboardPageTitle");
+		actualTitle = Browser.driver.getTitle();
+		Checkpoints.check(actualTitle, expectedTitle, "Dashboard Page Title");
 		
 		Checkpoints.failureHandler();
 	}
@@ -120,6 +127,8 @@ public class Login
 		column = DataDriver.getColumnNamesFromSheet("Site");
 		String siteURL = Site[dataRowFromSheet][column.get("Site URL")];		
 		Browser.launchSite(siteURL);
+		
+		prop = Util.getPageProperties("LoginPage");
 		
 		String[][] MissingUserID = DataDriver.getData("MissingUserID");
 		column = DataDriver.getColumnNamesFromSheet("MissingUserID");
@@ -143,6 +152,8 @@ public class Login
 		
 		String siteURL = Site[dataRowFromSheet][column.get("Site URL")];		
 		Browser.launchSite(siteURL);
+		
+		prop = Util.getPageProperties("LoginPage");
 		
 		String[][] IncorrectUserID = DataDriver.getData("IncorrectUserID");
 		column = DataDriver.getColumnNamesFromSheet("IncorrectUserID");
