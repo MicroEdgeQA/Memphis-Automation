@@ -11,6 +11,9 @@ public class Checkpoints
 	
 	public void check(String expected, String actual, String checkName)
 	{	
+		// Set to true to stop test execution when a check failure occurs
+		boolean stopTestOnFailure = false;
+		
 		// Takes an expected and actual value and performs a simple check
 		// Writes the results to the TestNG reporter and Java console
 		if (expected.equals(actual))
@@ -25,6 +28,9 @@ public class Checkpoints
 				if (Screenshots.takeScreenshot) Screenshots.screenshot();
 				testFailed = true;
 				failedCheck = failedCheck + "<< " + checkName + " >>, ";
+				
+				// Stop test execution when a check failure occurs
+				if (stopTestOnFailure) throw new AssertionError("* Test aborted! Check FAILED: " + checkName + " *");
 		}
 	}
 	
