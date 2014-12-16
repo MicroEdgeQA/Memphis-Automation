@@ -19,7 +19,7 @@ public class Checkpoints
 		// Writes the results to the TestNG reporter and Java console
 		if (expected.equals(actual))
 			{
-				Reporter.log("Check Passed for " + checkName + " - " + "<< " + expected + " >>", true);
+				Reporter.log("Check <font color='green'>PASSED</font> for " + checkName + " - " + "<< " + expected + " >>", true);
 				if (Screenshots.takeScreenshot)
 				{
 					if (takeScreenshotForPassed) Screenshots.screenshot();
@@ -29,7 +29,7 @@ public class Checkpoints
 		
 		else
 		{
-				Reporter.log("Check FAILED for " + checkName + " - " + "Expected value << " + expected + " >> does not match actual value << " + actual + " >>", true);
+				Reporter.log("Check <font color='red'>FAILED</font> for " + checkName + " - " + "Expected value << " + expected + " >> does not match actual value << " + actual + " >>", true);
 				if (Screenshots.takeScreenshot) Screenshots.screenshot();
 				testFailed = true;
 				failedCheck = failedCheck + "<< " + checkName + " >>, ";
@@ -54,6 +54,6 @@ public class Checkpoints
 			// Mark test as failed in report with list of failed checks
 			throw new AssertionError(failedCheckList);
 		}
-		else Reporter.log("* All checks in this automated test iteration have passed! *", true);
+		else Reporter.log("<font color='green'>* All checks in this automated test iteration have passed! *</font>", true);
 	}
 }
