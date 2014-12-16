@@ -1,6 +1,6 @@
 package common;
 
-import org.junit.Assert;
+import org.testng.Assert;
 import org.testng.Reporter;
 
 public class Checkpoints
@@ -11,16 +11,16 @@ public class Checkpoints
 	// A failure will set testPassed to false and allow the failureHandler method to detect this
 	// and throw an assertion which will be used to mark the test as failed in the results
 	// Subsequent tests must initialize testPassed to true again to reset the failure tracking
-	public static boolean testPassed = true;
+	public static boolean testPassed = false;
 	
 	// When set to false a check failure will be logged and the test execution will continue running
 	// When set to true a check failure will stop the test execution
-	private static boolean stopTestOnFailure = false;
+	private static boolean stopTestOnFailure = true;
 	
 	public static void check(String expected, String actual, String checkName)
 	{	
 		// Takes an expected and actual value and performs a simple check
-		if (stopTestOnFailure) Assert.assertEquals(expected, actual);
+		if (stopTestOnFailure) Assert.assertEquals(actual, expected);
 		
 		// Writes the results to the TestNG reporter and Java console
 		else if (expected.equals(actual))

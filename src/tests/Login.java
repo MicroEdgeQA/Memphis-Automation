@@ -4,10 +4,10 @@ import java.util.Arrays;
 import java.util.Hashtable;
 import java.util.Properties;
 
-import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
+import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeTest;
