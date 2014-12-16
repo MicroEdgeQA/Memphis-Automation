@@ -21,6 +21,7 @@ public class Checkpoints
 			{
 				Reporter.log("Check Passed for " + checkName + " - " + "<< " + expected + " >>", true);
 				if ((Screenshots.takeScreenshot) && (takeScreenshotForPassed)) Screenshots.screenshot();
+				if ((Screenshots.takeScreenshot) && (!takeScreenshotForPassed)) Reporter.log("<br>");  // Improves report appearance
 			}
 		
 		else
