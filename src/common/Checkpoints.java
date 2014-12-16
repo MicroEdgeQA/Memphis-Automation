@@ -13,13 +13,14 @@ public class Checkpoints
 	{	
 		// Set to true to stop test execution when a check failure occurs
 		boolean stopTestOnFailure = false;
+		boolean takeScreenshotForPassed = false;
 		
 		// Takes an expected and actual value and performs a simple check
 		// Writes the results to the TestNG reporter and Java console
 		if (expected.equals(actual))
 			{
 				Reporter.log("Check Passed for " + checkName + " - " + "<< " + expected + " >>", true);
-				if (Screenshots.takeScreenshot) Screenshots.screenshot();
+				if ((Screenshots.takeScreenshot) && (takeScreenshotForPassed)) Screenshots.screenshot();
 			}
 		
 		else
