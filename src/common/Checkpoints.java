@@ -20,8 +20,11 @@ public class Checkpoints
 		if (expected.equals(actual))
 			{
 				Reporter.log("Check Passed for " + checkName + " - " + "<< " + expected + " >>", true);
-				if ((Screenshots.takeScreenshot) && (takeScreenshotForPassed)) Screenshots.screenshot();
-				if ((Screenshots.takeScreenshot) && (!takeScreenshotForPassed)) Reporter.log("<br>");  // Improves report appearance
+				if (Screenshots.takeScreenshot)
+				{
+					if (takeScreenshotForPassed) Screenshots.screenshot();
+					if (!takeScreenshotForPassed) Reporter.log("<br>");  // Improves report appearance
+				}
 			}
 		
 		else
