@@ -1,5 +1,6 @@
 package common;
 
+import org.junit.Assert;
 import org.testng.Reporter;
 
 public class Checkpoints
@@ -12,11 +13,17 @@ public class Checkpoints
 	// Subsequent tests must initialize testPassed to true again to reset the failure tracking
 	public static boolean testPassed = true;
 	
+	// When set to false a check failure will be logged and the test execution will continue running
+	// When set to true a check failure will stop the test execution
+	private static boolean stopTestOnFailure = false;
+	
 	public static void check(String expected, String actual, String checkName)
 	{	
 		// Takes an expected and actual value and performs a simple check
+		if (stopTestOnFailure) Assert.assertEquals(expected, actual);
+		
 		// Writes the results to the TestNG reporter and Java console
-		if (expected.equals(actual))
+		else if (expected.equals(actual))
 			{
 				Reporter.log("Check Passed for " + checkName + " - " + "<< " + expected + " >>", true);
 			}
@@ -27,16 +34,16 @@ public class Checkpoints
 				Reporter.log("Check FAILED for " + checkName + " - " + "Expected value << " + expected + " >> does not match actual value << " + actual + " >>", true);
 		}
 		
-		if (Screenshots.takeScreenshot == true) Screenshots.screenshot();
+		if (Screenshots.takeScreenshot) Screenshots.screenshot();
 	}
 	
-	public static void failureHandler(boolean testPassed)
+	public static void failureHandler()
 	{
 		// Must be last line of a test to avoid an assertion from halting test execution
 		// Failed checks will set testPassed variable to false which will trigger
 		// failed assertion to flag test iteration as failed in results report
-		// Tests must initialize testPassed to true and end by passing testPassed to the failureHandler method
-		if (testPassed == false)
+		// Tests must have the testPassed variable initialized to true and end by calling the failureHandler method
+		if (!testPassed)
 		{
 			Reporter.log("* One or more FAILURES have occurred in this test iteration!  Please examine the results.");
 			Reporter.log("<br>");

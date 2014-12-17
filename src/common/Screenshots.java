@@ -2,6 +2,9 @@ package common;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.OutputType;
@@ -33,12 +36,18 @@ public class Screenshots
 	{      
 		// Takes a screenshot and saves it to a file
 		// The directory name used to store the screenshot files is generated randomly to not overwrite previous executions
-		timestamp = System.currentTimeMillis();
+			
+		DateFormat dateFormat = new SimpleDateFormat("EEE_MMM_d_yyyy_");
+		Date dateTime = new Date();
+		String day = dateFormat.format(dateTime);
+		dateFormat = new SimpleDateFormat("hh_mm_ss_a");
+		String date = dateFormat.format(dateTime);
+		
 		File screenshot = ((TakesScreenshot)Browser.driver).getScreenshotAs(OutputType.FILE);
 		
 		try
 		{
-			String filePath = storeScreenshots + "\\" + directoryName + "\\" + "TestExecution" + timestamp + ".png";
+			String filePath = storeScreenshots + "\\" + directoryName + "\\" + day + date + ".png";
 			FileUtils.copyFile(screenshot, new File(filePath));
 			Reporter.log("<a href=" + filePath + " target='_blank' > (Screenshot) </a>");
 			Reporter.log("<br>");
