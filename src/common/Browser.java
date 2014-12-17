@@ -17,14 +17,18 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 public class Browser
 {
 	public static WebDriver driver = null;
+	public static String dataDirectory = null;
 	
 	// Required for links in Test Results Report to be displayed
 	public static final String ESCAPE_PROPERTY = "org.uncommons.reportng.escape-output";
 	
-	public static void browserConfig(String browser, String screenshotLocation)
+	public static void browserConfig(String browser, String screenshotLocation, String dataLocation)
 	{	
 		// Set the screenshot storage location
 		Screenshots.setScreenshotLocation(screenshotLocation);
+		
+		// Set the directory where test data files are stored
+		dataDirectory = dataLocation;
 		
 		// Required for links in Test Results Report to be displayed
 		System.setProperty(ESCAPE_PROPERTY, "false");

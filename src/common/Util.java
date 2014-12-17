@@ -31,7 +31,8 @@ public class Util {
 		
 		Properties prop = new Properties();
 		InputStream input = null;
-		String propertyFile = "./" + page + ".properties";
+		String propertyFile = Browser.dataDirectory + "/" + page + ".properties";
+		// String propertyFile = "./" + page + ".properties";
 		
 		try{
 			input = new FileInputStream(propertyFile);
