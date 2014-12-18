@@ -25,20 +25,27 @@ public class Notification
     public static void sendEmail(String args[])
     {        		   
     	// Command line arguments
-    	String resultsDir = args[0]; 
+    	
+    	String resultsDir = args[0];
     	String from       = args[1];
     	String to         = args[2];
     	String host       = args[3];
     	String user       = args[4];
     	String password   = args[5];
-    	    	
-    	String subject = "Automated Test Results";
-        String bodyText = "The automated test execution has completed.  The results are attached to this e-mail.";
+    	    	    	
+    	String subject = "MicroEdge Automated Test Results";
+        String bodyText = "The automated test execution has completed.  The results are attached to this e-mail.  Extract all files to the same location and launch index.html.";
         
         String attachmentName = resultsDir + "\\results.zip";
         
         Properties props = System.getProperties();
-        Session session = Session.getDefaultInstance(props);
+        
+        props.put("mail.smtp.socketFactory.port", 465);
+        props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+        props.put("mail.smtp.starttls.enable", true);
+        props.put("mail.smtp.auth", true);
+        
+        Session session = Session.getDefaultInstance(props, null);
 
         try
         {
@@ -53,6 +60,7 @@ public class Notification
             MimeBodyPart messagePart = new MimeBodyPart();
             messagePart.setText(bodyText);
 
+            System.out.println(attachmentName);
             FileDataSource fileDataSource = new FileDataSource(attachmentName);
 
             MimeBodyPart attachmentPart = new MimeBodyPart();
@@ -71,7 +79,8 @@ public class Notification
             
         } catch (MessagingException e)
           {
-        		System.out.println("Problem sending e-mail!");
+        	System.out.println(e.getMessage());
+        	System.out.println("Problem sending e-mail!");
           }
     }
 }
