@@ -133,7 +133,7 @@ public class Login
 		// Click Login button
 		Browser.driver.findElement(By.className(prop.getProperty("loginButton"))).click();
 		WebElement loginImgVisible = wait.until(
-		        ExpectedConditions.visibilityOfElementLocated(By.className("img-responsive")));
+		        ExpectedConditions.visibilityOfElementLocated(By.className(prop.getProperty("dash-img"))));
 		
 		prop = Util.getPageProperties("DashboardPage");
 		
@@ -201,7 +201,7 @@ public class Login
 		JavascriptExecutor exec = (JavascriptExecutor)Browser.driver;
 		exec.executeScript("arguments[0].click()", forgotPasswordLink);
 		WebElement emailFieldVisible = wait.until(
-		        ExpectedConditions.visibilityOfElementLocated(By.id("Email")));
+		        ExpectedConditions.visibilityOfElementLocated(By.id(prop.getProperty("email"))));
 		
 		String expectedTitle = prop.getProperty("forgotPasswordPageTitle");
 		String actualTitle = Browser.driver.getTitle();
