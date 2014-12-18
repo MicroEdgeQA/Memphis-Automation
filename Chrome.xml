@@ -2,7 +2,7 @@
 
 <parameter name="browser"            value="Chrome"/>
 <parameter name="dataLocation"       value="\\10.10.2.11\qa\qa\QA_Automation\Memphis"/>
-<parameter name="screenshotLocation" value="C:\Screenshots"/>
+<parameter name="screenshotLocation" value="\\10.10.2.11\qa\qa\QA_Automation\Memphis\Screenshots"/>
 
 <listeners>
       <listener class-name="org.uncommons.reportng.HTMLReporter"/>
