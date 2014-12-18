@@ -32,7 +32,11 @@ public class Notification
     	String password   = args[5];
     	    	    	
     	String subject = "MicroEdge Automated Test Results";
-        String bodyText = "The automated test execution has completed.  The results are attached to this e-mail.  Extract all files to the same location and launch index.html.";
+        	
+    	String bodyText = "The automated test execution has completed.  The results have been saved to:"
+        				+ "<br><a href=\"" + "resultsDir" + "\\index.html</a>"
+        				+ "<br>The results are also attached to this e-mail for your convenience."
+        				+ "<br>Extract all files to the same location and launch index.html.";
         
         String attachmentName = resultsDir + "\\results.zip";
         
@@ -59,7 +63,7 @@ public class Notification
             MimeBodyPart messagePart = new MimeBodyPart();
             messagePart.setText(bodyText);
 
-            System.out.println(attachmentName);
+            System.out.println("Test results saved to: " + attachmentName);
             FileDataSource fileDataSource = new FileDataSource(attachmentName);
 
             MimeBodyPart attachmentPart = new MimeBodyPart();
