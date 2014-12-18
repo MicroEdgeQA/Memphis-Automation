@@ -9,6 +9,7 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.DataProvider;
@@ -25,6 +26,8 @@ public class Login
 {		
 	private Properties prop;
 	private Checkpoints checkpoints = new Checkpoints();
+	private String siteURL;
+	Hashtable<String, Integer> column;
 	
 	@AfterClass
 	public void afterClass()
@@ -37,7 +40,7 @@ public class Login
 	{
 		// Make sure page is ready
 		Assert.assertEquals(Util.IsDOMReady(Browser.driver), true);
-	}
+	}	
 	
 	@Parameters({"browser", "dataLocation", "screenshotLocation"})
 	@BeforeTest
@@ -45,6 +48,10 @@ public class Login
 	{
 		String dataSourceName = this.getClass().getSimpleName();
 		TestConfiguration.beforeTest(browser, dataLocation, screenshotLocation, dataSourceName);
+		
+		String[][] site = DataDriver.getData("Site");
+		column = DataDriver.getColumnNamesFromSheet("Site");
+		siteURL = site[1][column.get("Site URL")];
 	}
 	
 	@DataProvider(name="Iteration")
@@ -60,12 +67,7 @@ public class Login
 	@Test(enabled = true, description="Header and Footer", dataProvider="Iteration")
 	public void headerFooter(String rowForIteration, String iterationDescription)
 	{			
-		Hashtable<String, Integer> column;
-		int dataRowFromSheet = Integer.parseInt(rowForIteration);
-		
-		String[][] HeaderFooter = DataDriver.getData("Site");
-		column = DataDriver.getColumnNamesFromSheet("Site");
-		String siteURL = HeaderFooter[dataRowFromSheet][column.get("Site URL")];		
+		int dataRowFromSheet = Integer.parseInt(rowForIteration);	
 		Browser.launchSite(siteURL);
 		
 		prop = Util.getPageProperties("LoginPage");
@@ -88,13 +90,7 @@ public class Login
 	@Test(enabled = true, description="Successful Login", dataProvider="Iteration")
 	public void loginSuccessful(String rowForIteration, String iterationDescription)
 	{	
-		Hashtable<String, Integer> column;
-		int dataRowFromSheet = Integer.parseInt(rowForIteration);
-		
-		String[][] Site = DataDriver.getData("Site");
-		column = DataDriver.getColumnNamesFromSheet("Site");
-		
-		String siteURL = Site[dataRowFromSheet][column.get("Site URL")];		
+		int dataRowFromSheet = Integer.parseInt(rowForIteration);		
 		Browser.launchSite(siteURL);
 		
 		prop = Util.getPageProperties("LoginPage");
@@ -146,12 +142,7 @@ public class Login
 	@Test(enabled = true, description="Missing User ID", dataProvider="Iteration")
 	public void missingUserID(String rowForIteration, String iterationDescription)
 	{			
-		Hashtable<String, Integer> column;
-		int dataRowFromSheet = Integer.parseInt(rowForIteration);
-		
-		String[][] Site = DataDriver.getData("Site");
-		column = DataDriver.getColumnNamesFromSheet("Site");
-		String siteURL = Site[dataRowFromSheet][column.get("Site URL")];		
+		int dataRowFromSheet = Integer.parseInt(rowForIteration);		
 		Browser.launchSite(siteURL);
 		
 		prop = Util.getPageProperties("LoginPage");
@@ -170,13 +161,7 @@ public class Login
 	@Test(enabled = true, description="Incorrect User ID or Password", dataProvider="Iteration")
 	public void incorrectUserIDPassword(String rowForIteration, String iterationDescription)
 	{	
-		Hashtable<String, Integer> column;
-		int dataRowFromSheet = Integer.parseInt(rowForIteration);
-		
-		String[][] Site = DataDriver.getData("Site");
-		column = DataDriver.getColumnNamesFromSheet("Site");
-		
-		String siteURL = Site[dataRowFromSheet][column.get("Site URL")];		
+		int dataRowFromSheet = Integer.parseInt(rowForIteration);	
 		Browser.launchSite(siteURL);
 		
 		prop = Util.getPageProperties("LoginPage");
@@ -200,12 +185,7 @@ public class Login
 	@Test(enabled = true, description="Forgot Password", dataProvider="Iteration")
 	public void forgotPasswordLink(String rowForIteration, String iterationDescription)
 	{	
-		Hashtable<String, Integer> column;
-		int dataRowFromSheet = Integer.parseInt(rowForIteration);
-		
-		String[][] Site = DataDriver.getData("Site");
-		column = DataDriver.getColumnNamesFromSheet("Site");
-		String siteURL = Site[dataRowFromSheet][column.get("Site URL")];		
+		int dataRowFromSheet = Integer.parseInt(rowForIteration);		
 		Browser.launchSite(siteURL);
 		
 		prop = Util.getPageProperties("ForgotPasswordPage");
