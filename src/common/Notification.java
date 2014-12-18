@@ -2,7 +2,6 @@ package common;
 
 import javax.activation.DataHandler;
 import javax.activation.FileDataSource;
-
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Multipart;
@@ -22,10 +21,9 @@ public class Notification
     	sendEmail(args);
     }
 
-    public static void sendEmail(String args[])
+    public static void sendEmail(String[] args)
     {        		   
     	// Command line arguments
-    	
     	String resultsDir = args[0];
     	String from       = args[1];
     	String to         = args[2];
@@ -54,6 +52,7 @@ public class Notification
 
             MimeMessage message = new MimeMessage(session);
             message.setFrom(fromAddress);
+                     
             message.setRecipient(Message.RecipientType.TO, toAddress);
             message.setSubject(subject);
 
