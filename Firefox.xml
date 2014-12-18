@@ -1,8 +1,7 @@
-<suite name="MicroEdge Memphis Automated Test - Firefox" verbose="10" parallel="methods" thread-count="5" >
+<suite name="MicroEdge Memphis Automated Test - Firefox" verbose="10">
 
 <parameter name="browser"            value="Firefox"/>
-<!--  <parameter name="dataLocation"       value="\\10.10.2.11\qa\qa\QA Automation\Memphis"/> -->
-<parameter name="dataLocation"       value="C:\Users\lbello\workspace\Memphis_Automation"/>
+<parameter name="dataLocation"       value="\\10.10.2.11\qa\qa\QA_Automation\Memphis"/>
 <parameter name="screenshotLocation" value="C:\Screenshots"/>
 
 <listeners>
@@ -12,7 +11,7 @@
 
   <test name="Login Page" preserve-order="true"> 
    <classes>
-   <class name="tests.Login_parallel">
+   <class name="tests.Login">
    <methods>
    <include name="headerFooter" />
    <include name="loginSuccessful" />

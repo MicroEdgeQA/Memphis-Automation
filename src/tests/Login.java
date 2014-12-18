@@ -4,11 +4,10 @@ import java.util.Arrays;
 import java.util.Hashtable;
 import java.util.Properties;
 
-import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
+import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeTest;
@@ -25,7 +24,8 @@ import common.Util;
 public class Login
 {		
 	private Properties prop;
-		
+	private Checkpoints checkpoints = new Checkpoints();
+	
 	@AfterClass
 	public void afterClass()
 	{
@@ -37,9 +37,6 @@ public class Login
 	{
 		// Make sure page is ready
 		Assert.assertEquals(Util.IsDOMReady(Browser.driver), true);
-		
-		// Reset check variables
-		Checkpoints.testPassed = true;
 	}
 	
 	@Parameters({"browser", "dataLocation", "screenshotLocation"})
@@ -48,7 +45,6 @@ public class Login
 	{
 		String dataSourceName = this.getClass().getSimpleName();
 		TestConfiguration.beforeTest(browser, dataLocation, screenshotLocation, dataSourceName);
-		Browser.driver.findElement(By.cssSelector("Body")).sendKeys(Keys.CONTROL + "t");
 	}
 	
 	@DataProvider(name="Iteration")
@@ -80,13 +76,13 @@ public class Login
 		// Check Header and Footer text
 		String loginHeaderExpected = headerFooter[dataRowFromSheet][column.get("Header Text")];
 		String loginHeaderActual = Browser.driver.findElement(By.className(prop.getProperty("header"))).getText();
-		Checkpoints.check(loginHeaderExpected, loginHeaderActual, "Login Page Header Text");
+		checkpoints.check(loginHeaderExpected, loginHeaderActual, "Login Page Header Text");
 		
 		String footerExpected = headerFooter[dataRowFromSheet][column.get("Footer Text")];
 		String footerActual = Browser.driver.findElement(By.xpath(prop.getProperty("footer"))).getText();
-		Checkpoints.check(footerExpected, footerActual, "Login Page Footer Text");
+		checkpoints.check(footerExpected, footerActual, "Login Page Footer Text");
 		
-		Checkpoints.failureHandler();
+		checkpoints.assertCheck();
 	}
 	
 	@Test(enabled = true, description="Successful Login", dataProvider="Iteration")
@@ -105,7 +101,7 @@ public class Login
 		
 		String expectedTitle = prop.getProperty("loginPageTitle");
 		String actualTitle = Browser.driver.getTitle();
-		Checkpoints.check(actualTitle, expectedTitle, "Login Page Title");		
+		checkpoints.check(actualTitle, expectedTitle, "Login Page Title");		
 		
 		String[][] LoginSuccessful = DataDriver.getData("LoginSuccessful");
 		column = DataDriver.getColumnNamesFromSheet("LoginSuccessful");
@@ -118,21 +114,21 @@ public class Login
 		
 		// Check placeholder text in User ID field
 		String defaultUserIDTextActual = Browser.driver.findElement(By.id(prop.getProperty("userIDField"))).getAttribute("placeholder");
-		Checkpoints.check(defaultUserIDTextExpected, defaultUserIDTextActual, "Default User ID Text");
+		checkpoints.check(defaultUserIDTextExpected, defaultUserIDTextActual, "Default User ID Text");
 		
 		// Check placeholder text in Password field
 		String defaultPasswordTextActual = Browser.driver.findElement(By.id(prop.getProperty("passwordField"))).getAttribute("placeholder");
-		Checkpoints.check(defaultPasswordTextExpected, defaultPasswordTextActual, "Default Password Text");
+		checkpoints.check(defaultPasswordTextExpected, defaultPasswordTextActual, "Default Password Text");
 
 		// Enter User ID and check text appears in User ID field
 		Browser.driver.findElement(By.id(prop.getProperty("userIDField"))).sendKeys(userIDExpected);
 		String userIDActual = Browser.driver.findElement(By.id(prop.getProperty("userIDField"))).getAttribute("value");
-		Checkpoints.check(userIDExpected, userIDActual, "User ID");
+		checkpoints.check(userIDExpected, userIDActual, "User ID");
 				
 		// Enter Password and check text appears in Password field
 		Browser.driver.findElement(By.id(prop.getProperty("passwordField"))).sendKeys(passwordExpected);
 		String passwordActual = Browser.driver.findElement(By.id(prop.getProperty("passwordField"))).getAttribute("value");
-		Checkpoints.check(passwordExpected, passwordActual, "Password");
+		checkpoints.check(passwordExpected, passwordActual, "Password");
 		
 		// Click Login button
 		Browser.driver.findElement(By.className(prop.getProperty("loginButton"))).click();
@@ -142,9 +138,9 @@ public class Login
 		
 		expectedTitle = prop.getProperty("dashboardPageTitle");
 		actualTitle = Browser.driver.getTitle();
-		Checkpoints.check(actualTitle, expectedTitle, "Dashboard Page Title");
+		checkpoints.check(actualTitle, expectedTitle, "Dashboard Page Title");
 		
-		Checkpoints.failureHandler();
+		checkpoints.assertCheck();
 	}
 	
 	@Test(enabled = true, description="Missing User ID", dataProvider="Iteration")
@@ -166,9 +162,9 @@ public class Login
 		
 		Browser.driver.findElement(By.className(prop.getProperty("loginButton"))).click();
 		String userIDRequiredActual = Browser.driver.findElement(By.className(prop.getProperty("userIDRequired"))).getText();
-		Checkpoints.check(userIDRequiredExpected, userIDRequiredActual, "Missing User ID Text");
+		checkpoints.check(userIDRequiredExpected, userIDRequiredActual, "Missing User ID Text");
 		
-		Checkpoints.failureHandler();
+		checkpoints.assertCheck();
 	}
 	
 	@Test(enabled = true, description="Incorrect User ID or Password", dataProvider="Iteration")
@@ -196,14 +192,14 @@ public class Login
 		Browser.pause(5);
 		
 		String incorrectUserIDPasswordActual = Browser.driver.findElement(By.xpath(prop.getProperty("incorrectUserIDPassword"))).getText();
-		Checkpoints.check(incorrectUserIDPasswordExpected, incorrectUserIDPasswordActual, "Incorrect User ID or Password Text");
+		checkpoints.check(incorrectUserIDPasswordExpected, incorrectUserIDPasswordActual, "Incorrect User ID or Password Text");
 		
-		Checkpoints.failureHandler();
+		checkpoints.assertCheck();
 	}
 
 	@Test(enabled = true, description="Forgot Password", dataProvider="Iteration")
 	public void forgotPasswordLink(String rowForIteration, String iterationDescription)
-	{
+	{	
 		Hashtable<String, Integer> column;
 		int dataRowFromSheet = Integer.parseInt(rowForIteration);
 		
@@ -221,7 +217,7 @@ public class Login
 		
 		String expectedTitle = prop.getProperty("forgotPasswordPageTitle");
 		String actualTitle = Browser.driver.getTitle();
-		Checkpoints.check(actualTitle, expectedTitle, "Forgot Password Page Title");
+		checkpoints.check(actualTitle, expectedTitle, "Forgot Password Page Title");
 		
 		String[][] headerFooter = DataDriver.getData("ForgotPasswordHeaderFooter");
 		column = DataDriver.getColumnNamesFromSheet("ForgotPasswordHeaderFooter");
@@ -229,16 +225,16 @@ public class Login
 		// Check Header and Footer text
 		String forgotPasswordHeaderExpected1 = headerFooter[dataRowFromSheet][column.get("Header Text 1")];
 		String forgotPasswordHeaderActual1 = Browser.driver.findElement(By.className(prop.getProperty("header1"))).getText();
-		Checkpoints.check(forgotPasswordHeaderExpected1, forgotPasswordHeaderActual1, "Forgot Password Page Header 1 Text");
+		checkpoints.check(forgotPasswordHeaderExpected1, forgotPasswordHeaderActual1, "Forgot Password Page Header 1 Text");
 		
 		String forgotPasswordHeaderExpected2 = headerFooter[dataRowFromSheet][column.get("Header Text 2")];
 		String forgotPasswordHeaderActual2 = Browser.driver.findElement(By.xpath(prop.getProperty("header2"))).getText();
-		Checkpoints.check(forgotPasswordHeaderExpected2, forgotPasswordHeaderActual2, "Forgot Password Page Header 2 Text");
+		checkpoints.check(forgotPasswordHeaderExpected2, forgotPasswordHeaderActual2, "Forgot Password Page Header 2 Text");
 		
 		String forgotPasswordFooterExpected = headerFooter[dataRowFromSheet][column.get("Footer Text")];
 		String forgotPasswordFooterActual = Browser.driver.findElement(By.xpath(prop.getProperty("footer"))).getText();
-		Checkpoints.check(forgotPasswordFooterExpected, forgotPasswordFooterActual, "Forgot Password Page Footer Text");
+		checkpoints.check(forgotPasswordFooterExpected, forgotPasswordFooterActual, "Forgot Password Page Footer Text");
 		
-		Checkpoints.failureHandler();
+		checkpoints.assertCheck();
 	}	
 }
