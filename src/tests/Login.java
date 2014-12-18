@@ -7,6 +7,8 @@ import java.util.Properties;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeMethod;
@@ -16,9 +18,9 @@ import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
 import common.Browser;
+import common.Checkpoints;
 import common.DataDriver;
 import common.TestConfiguration;
-import common.Checkpoints;
 import common.Util;
 
 public class Login
@@ -26,6 +28,7 @@ public class Login
 	private Properties prop;
 	private Checkpoints checkpoints = new Checkpoints();
 	private String siteURL;
+	private WebDriverWait wait; 
 	Hashtable<String, Integer> column;
 	
 	@AfterClass
@@ -51,6 +54,8 @@ public class Login
 		String[][] site = DataDriver.getData("Site");
 		column = DataDriver.getColumnNamesFromSheet("Site");
 		siteURL = site[1][column.get("Site URL")];
+		
+		wait = new WebDriverWait(Browser.driver, 10);
 	}
 	
 	@DataProvider(name="Iteration")
@@ -127,7 +132,8 @@ public class Login
 		
 		// Click Login button
 		Browser.driver.findElement(By.className(prop.getProperty("loginButton"))).click();
-		Browser.pause(5);
+		WebElement loginImgVisible = wait.until(
+		        ExpectedConditions.visibilityOfElementLocated(By.className("img-responsive")));
 		
 		prop = Util.getPageProperties("DashboardPage");
 		
@@ -173,9 +179,11 @@ public class Login
 		
 		Browser.driver.findElement(By.id(prop.getProperty("userIDField"))).sendKeys(userID);
 		Browser.driver.findElement(By.className(prop.getProperty("loginButton"))).click();
-		Browser.pause(5);
 		
-		String incorrectUserIDPasswordActual = Browser.driver.findElement(By.xpath(prop.getProperty("incorrectUserIDPassword"))).getText();
+		WebElement incorrectUserIDPassword = wait.until(
+		        ExpectedConditions.visibilityOfElementLocated(By.xpath(prop.getProperty("incorrectUserIDPassword"))));
+		
+		String incorrectUserIDPasswordActual = incorrectUserIDPassword.getText();
 		checkpoints.check(incorrectUserIDPasswordExpected, incorrectUserIDPasswordActual, "Incorrect User ID or Password Text");
 		
 		checkpoints.assertCheck();
@@ -192,7 +200,8 @@ public class Login
 		WebElement forgotPasswordLink = Browser.driver.findElements(By.tagName("a")).get(1);
 		JavascriptExecutor exec = (JavascriptExecutor)Browser.driver;
 		exec.executeScript("arguments[0].click()", forgotPasswordLink);
-		Browser.pause(5);
+		WebElement emailFieldVisible = wait.until(
+		        ExpectedConditions.visibilityOfElementLocated(By.id("Email")));
 		
 		String expectedTitle = prop.getProperty("forgotPasswordPageTitle");
 		String actualTitle = Browser.driver.getTitle();
