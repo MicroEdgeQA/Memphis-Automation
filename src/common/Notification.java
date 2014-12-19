@@ -37,7 +37,7 @@ public class Notification
     	String bodyText = "MicroEdge - Quality Assurance - Automated Test Execution <br> "
     					+ "=========================================================================================================="
     					+ "<br><br>The automated test execution has completed. "
-    					+ "The results may be viewed by clicking here: <a href=" + resultsDir + "\\index.html>TEST RESULTS REPORT</a>"
+    					+ "The results may be viewed here: " + resultsDir + "\\index.html<br>"
     					+ "<br> The results have also been attached to this e-mail for your convenience."
     					+ "<br><br><br><br><br> This e-mail was sent via an automated system. Please do not reply to this e-mail.";
         
