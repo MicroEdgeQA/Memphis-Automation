@@ -131,9 +131,8 @@ public class Login
 		checkpoints.check(passwordExpected, passwordActual, "Password");
 		
 		// Click Login button
-		Browser.driver.findElement(By.className(prop.getProperty("loginButton"))).click();
-		WebElement loginImgVisible = wait.until(
-		        ExpectedConditions.visibilityOfElementLocated(By.className(prop.getProperty("dash-img"))));
+		Browser.driver.findElement(By.xpath(prop.getProperty("loginButton"))).click();
+		WebElement loginImgVisible = wait.until(ExpectedConditions.visibilityOfElementLocated(By.className(prop.getProperty("dash-img"))));
 		
 		prop = Util.getPageProperties("DashboardPage");
 		
@@ -156,7 +155,7 @@ public class Login
 		column = DataDriver.getColumnNamesFromSheet("MissingUserID");
 		String userIDRequiredExpected = MissingUserID[dataRowFromSheet][column.get("Missing User ID Text")];
 		
-		Browser.driver.findElement(By.className(prop.getProperty("loginButton"))).click();
+		Browser.driver.findElement(By.xpath(prop.getProperty("loginButton"))).click();
 		String userIDRequiredActual = Browser.driver.findElement(By.className(prop.getProperty("userIDRequired"))).getText();
 		checkpoints.check(userIDRequiredExpected, userIDRequiredActual, "Missing User ID Text");
 		
@@ -178,10 +177,9 @@ public class Login
 		String userID = IncorrectUserID[dataRowFromSheet][column.get("User ID")];
 		
 		Browser.driver.findElement(By.id(prop.getProperty("userIDField"))).sendKeys(userID);
-		Browser.driver.findElement(By.className(prop.getProperty("loginButton"))).click();
+		Browser.driver.findElement(By.xpath(prop.getProperty("loginButton"))).click();
 		
-		WebElement incorrectUserIDPassword = wait.until(
-		        ExpectedConditions.visibilityOfElementLocated(By.xpath(prop.getProperty("incorrectUserIDPassword"))));
+		WebElement incorrectUserIDPassword = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(prop.getProperty("incorrectUserIDPassword"))));
 		
 		String incorrectUserIDPasswordActual = incorrectUserIDPassword.getText();
 		checkpoints.check(incorrectUserIDPasswordExpected, incorrectUserIDPasswordActual, "Incorrect User ID or Password Text");
@@ -200,8 +198,7 @@ public class Login
 		WebElement forgotPasswordLink = Browser.driver.findElements(By.tagName("a")).get(1);
 		JavascriptExecutor exec = (JavascriptExecutor)Browser.driver;
 		exec.executeScript("arguments[0].click()", forgotPasswordLink);
-		WebElement emailFieldVisible = wait.until(
-		        ExpectedConditions.visibilityOfElementLocated(By.id(prop.getProperty("email"))));
+		WebElement emailFieldVisible = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id(prop.getProperty("emailField"))));
 		
 		String expectedTitle = prop.getProperty("forgotPasswordPageTitle");
 		String actualTitle = Browser.driver.getTitle();
@@ -222,6 +219,41 @@ public class Login
 		String forgotPasswordFooterExpected = headerFooter[dataRowFromSheet][column.get("Footer Text")];
 		String forgotPasswordFooterActual = Browser.driver.findElement(By.xpath(prop.getProperty("footer"))).getText();
 		checkpoints.check(forgotPasswordFooterExpected, forgotPasswordFooterActual, "Forgot Password Page Footer Text");
+		
+		String[][] forgotPasswordEmail = DataDriver.getData("ForgotPasswordEmail");
+		column = DataDriver.getColumnNamesFromSheet("ForgotPasswordEmail");
+		
+		// Check placeholder text in E-Mail Address field
+		String defaultEmailAddressTextExpected = forgotPasswordEmail[dataRowFromSheet][column.get("Default E-Mail Address Text")];
+		String defaultEmailAddressTextActual = Browser.driver.findElement(By.id(prop.getProperty("emailField"))).getAttribute("placeholder");
+		checkpoints.check(defaultEmailAddressTextExpected, defaultEmailAddressTextActual, "Default E-Mail Address Text");
+		
+		// Send e-mail address for forgotten password
+		String forgotPasswordEmailExpected = forgotPasswordEmail[dataRowFromSheet][column.get("E-Mail Address")];
+		Browser.driver.findElement(By.id(prop.getProperty("emailField"))).sendKeys(forgotPasswordEmailExpected);
+		String forgotPasswordEmailActual = Browser.driver.findElement(By.id(prop.getProperty("emailField"))).getAttribute("value");
+		checkpoints.check(forgotPasswordEmailExpected, forgotPasswordEmailActual, "Forgot Password E-Mail Address");
+		Browser.driver.findElement(By.className(prop.getProperty("sendButton"))).click();
+		
+		WebElement passwordSent = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(prop.getProperty("okayButton"))));
+		
+		// Click header on page after password is sent
+		String passwordSentHeaderExpected = forgotPasswordEmail[dataRowFromSheet][column.get("Password Sent Header Text")];
+		String passwordSentHeaderActual = Browser.driver.findElement(By.xpath(prop.getProperty("passwordSentHeader"))).getText();
+		checkpoints.check(passwordSentHeaderExpected, passwordSentHeaderActual, "Password Sent Header Text");
+		
+		// Click OK button to return to login page
+		WebElement okayButton = Browser.driver.findElement(By.xpath((prop.getProperty("okayButton"))));
+		exec.executeScript("arguments[0].click()", okayButton);
+		prop = Util.getPageProperties("LoginPage");
+		WebElement loginPage = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(prop.getProperty("loginButton"))));
+		
+		/* Log into e-mail account and confirm e-mail received
+		Browser.launchSite("http://www.gmail.com");
+		emailFieldVisible = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("Email")));
+		WebMail.webMailLogin("gmail", "me.automaton", "microedge123");
+		WebMail.webMailOpenMessage("gmail", "MicroEdge - Automated");
+		WebMail.webMailLogout("gmail"); */
 		
 		checkpoints.assertCheck();
 	}	
