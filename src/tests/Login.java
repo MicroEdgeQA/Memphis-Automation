@@ -22,6 +22,7 @@ import common.Checkpoints;
 import common.DataDriver;
 import common.TestConfiguration;
 import common.Util;
+import common.WebMail;
 
 public class Login
 {		
@@ -68,7 +69,7 @@ public class Login
 	    return(rowForIteration);
 	}
 	
-	@Test(enabled = true, description="Header and Footer", dataProvider="Iteration")
+	@Test(enabled = false, description="Header and Footer", dataProvider="Iteration")
 	public void headerFooter(String rowForIteration, String iterationDescription)
 	{			
 		int dataRowFromSheet = Integer.parseInt(rowForIteration);	
@@ -91,7 +92,7 @@ public class Login
 		checkpoints.assertCheck();
 	}
 	
-	@Test(enabled = true, description="Successful Login", dataProvider="Iteration")
+	@Test(enabled = false, description="Successful Login", dataProvider="Iteration")
 	public void loginSuccessful(String rowForIteration, String iterationDescription)
 	{	
 		int dataRowFromSheet = Integer.parseInt(rowForIteration);		
@@ -143,7 +144,7 @@ public class Login
 		checkpoints.assertCheck();
 	}
 	
-	@Test(enabled = true, description="Missing User ID", dataProvider="Iteration")
+	@Test(enabled = false, description="Missing User ID", dataProvider="Iteration")
 	public void missingUserID(String rowForIteration, String iterationDescription)
 	{			
 		int dataRowFromSheet = Integer.parseInt(rowForIteration);		
@@ -162,7 +163,7 @@ public class Login
 		checkpoints.assertCheck();
 	}
 	
-	@Test(enabled = true, description="Incorrect User ID or Password", dataProvider="Iteration")
+	@Test(enabled = false, description="Incorrect User ID or Password", dataProvider="Iteration")
 	public void incorrectUserIDPassword(String rowForIteration, String iterationDescription)
 	{	
 		int dataRowFromSheet = Integer.parseInt(rowForIteration);	
@@ -248,12 +249,20 @@ public class Login
 		prop = Util.getPageProperties("LoginPage");
 		WebElement loginPage = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(prop.getProperty("loginButton"))));
 		
-		/* Log into e-mail account and confirm e-mail received
-		Browser.launchSite("http://www.gmail.com");
+		// Log into e-mail account and confirm e-mail received
+		String provider = "gmail";
+		WebMail.launchWebMail(provider);
 		emailFieldVisible = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("Email")));
-		WebMail.webMailLogin("gmail", "me.automaton", "microedge123");
-		WebMail.webMailOpenMessage("gmail", "MicroEdge - Automated");
-		WebMail.webMailLogout("gmail"); */
+		
+		String emailSubjectTextExpected = forgotPasswordEmail[dataRowFromSheet][column.get("Forgot Password E-Mail Subject Text")];
+		WebMail.webMailLogin(provider, "me.automaton", "microedge123");
+		WebMail.webMailOpenMessage(provider, emailSubjectTextExpected);
+		
+		// Check text of e-mail
+		String emailBodyTextExpected = forgotPasswordEmail[dataRowFromSheet][column.get("Forgot Password E-Mail Body Text")];
+		String emailBodyTextActual = WebMail.webMailReadEmail(provider);
+		checkpoints.check(emailBodyTextExpected, emailBodyTextActual, "Forgot Password E-Mail Body Text");
+		WebMail.webMailLogout(provider);
 		
 		checkpoints.assertCheck();
 	}	
