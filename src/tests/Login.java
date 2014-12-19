@@ -69,7 +69,7 @@ public class Login
 	    return(rowForIteration);
 	}
 	
-	@Test(enabled = false, description="Header and Footer", dataProvider="Iteration")
+	@Test(enabled = true, description="Header and Footer", dataProvider="Iteration")
 	public void headerFooter(String rowForIteration, String iterationDescription)
 	{			
 		int dataRowFromSheet = Integer.parseInt(rowForIteration);	
@@ -92,7 +92,7 @@ public class Login
 		checkpoints.assertCheck();
 	}
 	
-	@Test(enabled = false, description="Successful Login", dataProvider="Iteration")
+	@Test(enabled = true, description="Successful Login", dataProvider="Iteration")
 	public void loginSuccessful(String rowForIteration, String iterationDescription)
 	{	
 		int dataRowFromSheet = Integer.parseInt(rowForIteration);		
@@ -144,7 +144,7 @@ public class Login
 		checkpoints.assertCheck();
 	}
 	
-	@Test(enabled = false, description="Missing User ID", dataProvider="Iteration")
+	@Test(enabled = true, description="Missing User ID", dataProvider="Iteration")
 	public void missingUserID(String rowForIteration, String iterationDescription)
 	{			
 		int dataRowFromSheet = Integer.parseInt(rowForIteration);		
@@ -163,7 +163,7 @@ public class Login
 		checkpoints.assertCheck();
 	}
 	
-	@Test(enabled = false, description="Incorrect User ID or Password", dataProvider="Iteration")
+	@Test(enabled = true, description="Incorrect User ID or Password", dataProvider="Iteration")
 	public void incorrectUserIDPassword(String rowForIteration, String iterationDescription)
 	{	
 		int dataRowFromSheet = Integer.parseInt(rowForIteration);	

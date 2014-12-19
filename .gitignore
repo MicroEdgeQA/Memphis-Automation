@@ -1,3 +1,4 @@
 /target/
 /chromedriver.exe
 /IEDriverServer.exe
+/test-output/
