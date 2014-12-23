@@ -20,7 +20,6 @@ import org.testng.annotations.Test;
 import common.Browser;
 import common.Checkpoints;
 import common.DataDriver;
-import common.TestConfiguration;
 import common.Util;
 import common.WebMail;
 
@@ -50,13 +49,8 @@ public class Login
 	private void beforeTest(String browser, String dataLocation, String screenshotLocation)
 	{
 		String dataSourceName = this.getClass().getSimpleName();
-		TestConfiguration.beforeTest(browser, dataLocation, screenshotLocation, dataSourceName);
-		
-		String[][] site = DataDriver.getData("Site");
-		column = DataDriver.getColumnNamesFromSheet("Site");
-		siteURL = site[1][column.get("Site URL")];
-		
-		wait = new WebDriverWait(Browser.driver, 10);
+		Browser.browserConfig(browser, screenshotLocation, dataLocation);
+		DataDriver.assignDataSource(dataLocation, dataSourceName);
 	}
 	
 	@DataProvider(name="Iteration")
@@ -73,6 +67,10 @@ public class Login
 	public void headerFooter(String rowForIteration, String iterationDescription)
 	{			
 		int dataRowFromSheet = Integer.parseInt(rowForIteration);	
+		
+		String[][] site = DataDriver.getData("Site");
+		column = DataDriver.getColumnNamesFromSheet("Site");
+		siteURL = site[dataRowFromSheet][column.get("Site URL")];
 		Browser.launchSite(siteURL);
 		
 		prop = Util.getPageProperties("LoginPage");
@@ -96,6 +94,9 @@ public class Login
 	public void loginSuccessful(String rowForIteration, String iterationDescription)
 	{	
 		int dataRowFromSheet = Integer.parseInt(rowForIteration);		
+		String[][] site = DataDriver.getData("Site");
+		column = DataDriver.getColumnNamesFromSheet("Site");
+		siteURL = site[dataRowFromSheet][column.get("Site URL")];
 		Browser.launchSite(siteURL);
 		
 		prop = Util.getPageProperties("LoginPage");
@@ -148,6 +149,9 @@ public class Login
 	public void missingUserID(String rowForIteration, String iterationDescription)
 	{			
 		int dataRowFromSheet = Integer.parseInt(rowForIteration);		
+		String[][] site = DataDriver.getData("Site");
+		column = DataDriver.getColumnNamesFromSheet("Site");
+		siteURL = site[dataRowFromSheet][column.get("Site URL")];
 		Browser.launchSite(siteURL);
 		
 		prop = Util.getPageProperties("LoginPage");
@@ -167,6 +171,9 @@ public class Login
 	public void incorrectUserIDPassword(String rowForIteration, String iterationDescription)
 	{	
 		int dataRowFromSheet = Integer.parseInt(rowForIteration);	
+		String[][] site = DataDriver.getData("Site");
+		column = DataDriver.getColumnNamesFromSheet("Site");
+		siteURL = site[dataRowFromSheet][column.get("Site URL")];
 		Browser.launchSite(siteURL);
 		
 		prop = Util.getPageProperties("LoginPage");
@@ -192,6 +199,9 @@ public class Login
 	public void forgotPasswordLink(String rowForIteration, String iterationDescription)
 	{	
 		int dataRowFromSheet = Integer.parseInt(rowForIteration);		
+		String[][] site = DataDriver.getData("Site");
+		column = DataDriver.getColumnNamesFromSheet("Site");
+		siteURL = site[dataRowFromSheet][column.get("Site URL")];
 		Browser.launchSite(siteURL);
 		
 		prop = Util.getPageProperties("ForgotPasswordPage");
