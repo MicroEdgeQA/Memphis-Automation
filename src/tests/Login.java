@@ -51,7 +51,7 @@ public class Login
 	String[][] forgotPasswordEmail;
 	Hashtable<String, Integer> forgotPasswordEmailColumn;
 	
-	public void getData()
+	private void getData()
 	{
 		site = DataDriver.getData("Site");
 		siteColumn = DataDriver.getColumnNamesFromSheet("Site");
