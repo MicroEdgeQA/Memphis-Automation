@@ -1,27 +1,32 @@
 package android;
 
-import io.selendroid.SelendroidCapabilities;
-import io.selendroid.server.model.SelendroidStandaloneDriver;
+import io.selendroid.SelendroidConfiguration;
+import io.selendroid.SelendroidLauncher;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.testng.Assert;
+import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.RemoteWebDriver;
+import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
 public class selendroid_test {
 	
-	@Test
-	public void seledroidTest() 
+	private SelendroidLauncher selendroidServer;
+	
+	@BeforeTest
+	public void startSelendroid()
 	{
-		SelendroidCapabilities capa = new SelendroidCapabilities("io.selendroid.testapp:0.12.0");
-
-		SelendroidStandaloneDriver driver = new SelendroidStandaloneDriver(capa);
-		WebElement inputField = ((WebDriver) driver).findElement(By.id("my_text_field"));
-		Assert.assertEquals("true", inputField.getAttribute("enabled"));
-		inputField.sendKeys("Selendroid");
-		Assert.assertEquals("Selendroid", inputField.getText());
-		driver.quit();
+		SelendroidConfiguration config = new SelendroidConfiguration();
+		// Add the selendroid-test-app to the standalone server
+		//config.addSupportedApp("src/main/resources/selendroid-test-app-0.12.0.apk");
+		selendroidServer = new SelendroidLauncher(config);
+		selendroidServer.launchSelendroid();
+	}
+	@Test
+	public void seledroidTest() throws Exception 
+	{
+		WebDriver driver = new RemoteWebDriver(DesiredCapabilities.android());
+		driver.get("http://google.com");
 	}
 
 }

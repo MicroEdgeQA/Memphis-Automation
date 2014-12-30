@@ -30,9 +30,16 @@ public class Notification
     	String host       = args[3];
     	String user       = args[4];
     	String password   = args[5];
+    	String buildName =  args[6];
     	    	    	
-    	String subject = "MicroEdge Automated Test Results";
-        String bodyText = "The automated test execution has completed.  The results are attached to this e-mail.  Extract all files to the same location and launch index.html.";
+    	String subject = "MicroEdge - Automated Test Results for: " + buildName;
+        	
+    	String bodyText = "MicroEdge - Quality Assurance - Automated Test Execution <br> "
+    					+ "=========================================================================================================="
+    					+ "<br><br>The automated test execution has completed. "
+    					+ "The results may be viewed here: " + resultsDir + "\\index.html<br>"
+    					+ "<br> The results have also been attached to this e-mail for your convenience."
+    					+ "<br><br><br><br><br> This e-mail was sent via an automated system. Please do not reply to this e-mail.";
         
         String attachmentName = resultsDir + "\\results.zip";
         
@@ -57,9 +64,8 @@ public class Notification
             message.setSubject(subject);
 
             MimeBodyPart messagePart = new MimeBodyPart();
-            messagePart.setText(bodyText);
+            messagePart.setText(bodyText, "UTF-8", "html");
 
-            System.out.println(attachmentName);
             FileDataSource fileDataSource = new FileDataSource(attachmentName);
 
             MimeBodyPart attachmentPart = new MimeBodyPart();
