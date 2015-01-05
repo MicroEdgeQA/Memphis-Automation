@@ -1,11 +1,15 @@
-package tests;
+package android;
 
 import java.util.Arrays;
 import java.util.Hashtable;
 import java.util.Properties;
 
+import io.selendroid.SelendroidCapabilities;
+import io.selendroid.SelendroidDriver;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -21,14 +25,14 @@ import common.Browser;
 import common.Checkpoints;
 import common.DataDriver;
 import common.Util;
-import common.WebMail;
 
-public class Login
-{		
+public class Login {
+	
 	private String siteURL;
 	private Properties prop;
 	private WebDriverWait wait;
 	private Checkpoints checkpoints = new Checkpoints();
+	private WebDriver driver;
 	
 	String [][] site;
 	Hashtable<String, Integer> siteColumn;

@@ -1,0 +1,26 @@
+<suite name="MicroEdge Memphis Automated Test - Android" verbose="10">
+
+<parameter name="browser"            value="Android"/>
+<parameter name="dataLocation"       value="C:\Users\lbello\workspace\Memphis_Automation"/>
+<parameter name="screenshotLocation" value="DISABLED"/>
+
+<listeners>
+      <listener class-name="org.uncommons.reportng.HTMLReporter"/>
+      <listener class-name="org.uncommons.reportng.JUnitXMLReporter"/>     
+</listeners>
+
+  <test name="Login Page" preserve-order="true"> 
+   <classes>
+   <class name="android.Login">
+   <methods>
+   <include name="headerFooter" />
+   <include name="loginSuccessful" />
+   <include name="missingUserID" />
+   <include name="incorrectUserIDPassword" />
+   <include name="forgotPasswordLink" />
+   </methods>
+   </class>
+   </classes>
+  </test>
+  
+</suite>

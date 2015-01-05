@@ -1,5 +1,8 @@
 package common;
 
+import io.selendroid.SelendroidCapabilities;
+import io.selendroid.SelendroidDriver;
+
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -22,7 +25,7 @@ public class Browser
 	// Required for links in Test Results Report to be displayed
 	public static final String ESCAPE_PROPERTY = "org.uncommons.reportng.escape-output";
 	
-	public static void browserConfig(String browser, String screenshotLocation, String dataLocation)
+	public static void browserConfig(String browser, String screenshotLocation, String dataLocation) throws Exception
 	{	
 		// Set the screenshot storage location
 		Screenshots.setScreenshotLocation(screenshotLocation);
@@ -50,6 +53,11 @@ public class Browser
 			capabilities.setCapability(ChromeOptions.CAPABILITY, options);
 			
 			driver = new ChromeDriver(capabilities);
+		}
+		
+		else if (browser.equals("Android"))
+		{
+			driver = new SelendroidDriver(SelendroidCapabilities.android());
 		}
 	}
 	
