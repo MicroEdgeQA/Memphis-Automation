@@ -38,6 +38,7 @@ public class DataDriver
 				dataForTest = (getDataSheet(dataSheet));
 			} catch (IOException e)
 				{
+					System.out.println(e.getMessage());
 					System.out.println("Problem getting data from spreadsheet!");
 				}
 		return dataForTest;
