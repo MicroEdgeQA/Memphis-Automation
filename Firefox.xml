@@ -1,8 +1,8 @@
 <suite name="MicroEdge Memphis Automated Test - Firefox" verbose="10">
 
 <parameter name="browser"            value="Firefox"/>
-<parameter name="dataLocation"       value="\\127.27.4.11\qa\qa\QA_Automation\Memphis"/>
-<parameter name="screenshotLocation" value="\\127.27.4.11\qa\qa\QA_Automation\Screenshots\Memphis"/>
+<parameter name="dataLocation"       value="\\172.27.4.11\qa\qa\QA_Automation\Memphis"/>
+<parameter name="screenshotLocation" value="\\172.27.4.11\qa\qa\QA_Automation\Screenshots\Memphis"/>
 
 <listeners>
       <listener class-name="org.uncommons.reportng.HTMLReporter"/>

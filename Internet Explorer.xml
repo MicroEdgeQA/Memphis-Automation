@@ -1,8 +1,8 @@
 <suite name="MicroEdge Memphis Automated Test - MSIE" verbose="10">
 
 <parameter name="browser"            value="Internet Explorer"/>
-<parameter name="dataLocation"       value="\\127.27.4.11\qa\qa\QA_Automation\Memphis"/>
-<parameter name="screenshotLocation" value="\\127.27.4.11\qa\qa\QA_Automation\Memphis\Screenshots"/>
+<parameter name="dataLocation"       value="\\172.27.4.11\qa\qa\QA_Automation\Memphis"/>
+<parameter name="screenshotLocation" value="\\172.27.4.11\qa\qa\QA_Automation\Memphis\Screenshots"/>
 
 <listeners>
       <listener class-name="org.uncommons.reportng.HTMLReporter"/>
