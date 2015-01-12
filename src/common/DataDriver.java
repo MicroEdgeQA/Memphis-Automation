@@ -89,6 +89,7 @@ public class DataDriver
 				dataColumnsForTest = (getDataSheetColumns(dataSheet));
 			} catch (IOException e)
 				{
+					System.out.println(e.getMessage());
 					System.out.println("Problem getting data from spreadsheet!");
 				}
 		return dataColumnsForTest;
