@@ -13,11 +13,11 @@
    <classes>
    <class name="tests.Login">
    <methods>
-   <include name="headerFooter" />
+   <include name="headerFooter" /> 
    <include name="loginSuccessful" />
    <include name="missingUserID" />
    <include name="incorrectUserIDPassword" />
-   <include name="forgotPasswordLink" />
+   <include name="forgotPasswordLink" /> 
    </methods>
    </class>
    </classes>

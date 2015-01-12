@@ -96,6 +96,7 @@ public class Login
 		Browser.browserConfig(browser, screenshotLocation, dataLocation);
 		DataDriver.assignDataSource(dataLocation, dataSourceName);
 		getData();
+		wait = new WebDriverWait(Browser.driver, 10);
 	}
 	
 	@DataProvider(name="Iteration")
@@ -168,7 +169,7 @@ public class Login
 		
 		// Click Login button
 		Browser.driver.findElement(By.xpath(prop.getProperty("loginButton"))).click();
-		WebElement loginImgVisible = wait.until(ExpectedConditions.visibilityOfElementLocated(By.className(prop.getProperty("dash-img"))));
+		WebElement loginImgVisible = wait.until(ExpectedConditions.presenceOfElementLocated(By.className(prop.getProperty("dash-img"))));
 		
 		prop = Util.getPageProperties("DashboardPage");
 		
