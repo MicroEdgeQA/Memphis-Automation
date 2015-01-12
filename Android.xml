@@ -1,7 +1,7 @@
 <suite name="MicroEdge Memphis Automated Test - Android" verbose="10">
 
 <parameter name="browser"            value="Android"/>
-<parameter name="dataLocation"       value="C:\Users\lbello\workspace\Memphis_Automation"/>
+<parameter name="dataLocation"       value="\\172.27.4.11\qa\qa\QA_Automation\Memphis"/>
 <parameter name="screenshotLocation" value="DISABLED"/>
 
 <listeners>
