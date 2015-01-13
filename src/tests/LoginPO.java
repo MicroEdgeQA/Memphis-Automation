@@ -1,16 +1,13 @@
-package android;
+package tests;
 
 import java.util.Arrays;
 import java.util.Hashtable;
 import java.util.Properties;
 
-import io.selendroid.SelendroidCapabilities;
-import io.selendroid.SelendroidDriver;
-
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
@@ -21,18 +18,23 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
+import properties.ForgotPasswordPage;
+import properties.LoginPage;
+
 import common.Browser;
 import common.Checkpoints;
 import common.DataDriver;
 import common.Util;
 
-public class Login {
-	
+public class LoginPO
+{		
 	private String siteURL;
 	private Properties prop;
 	private WebDriverWait wait;
 	private Checkpoints checkpoints = new Checkpoints();
-	private WebDriver driver;
+	
+	LoginPage loginPage = new LoginPage();
+	ForgotPasswordPage forgotPasswordPage = new ForgotPasswordPage();
 	
 	String [][] site;
 	Hashtable<String, Integer> siteColumn;
@@ -55,7 +57,7 @@ public class Login {
 	String[][] forgotPasswordEmail;
 	Hashtable<String, Integer> forgotPasswordEmailColumn;
 	
-	private void getData()
+	private void init()
 	{
 		site = DataDriver.getData("Site");
 		siteColumn = DataDriver.getColumnNamesFromSheet("Site");
@@ -77,6 +79,9 @@ public class Login {
 		
 		forgotPasswordEmail = DataDriver.getData("ForgotPasswordEmail");
 		forgotPasswordEmailColumn = DataDriver.getColumnNamesFromSheet("ForgotPasswordEmail");
+		
+		PageFactory.initElements(Browser.driver, loginPage);
+		PageFactory.initElements(Browser.driver, forgotPasswordPage);
 	}
 		
 	@AfterClass
@@ -99,7 +104,8 @@ public class Login {
 		String dataSourceName = this.getClass().getSimpleName();
 		Browser.browserConfig(browser, screenshotLocation, dataLocation);
 		DataDriver.assignDataSource(dataLocation, dataSourceName);
-		getData();
+		init();
+		wait = new WebDriverWait(Browser.driver, 10);
 	}
 	
 	@DataProvider(name="Iteration")
@@ -119,15 +125,13 @@ public class Login {
 		siteURL = site[dataRowFromSheet][siteColumn.get("Site URL")];
 		Browser.launchSite(siteURL);
 		
-		prop = Util.getPageProperties("LoginPage");
-		
 		// Check Header and Footer text
-		String loginHeaderExpected = loginHeaderFooter[dataRowFromSheet][loginHeaderFooterColumn.get("Header")];
-		String loginHeaderActual = Browser.driver.findElement(By.className(prop.getProperty("header"))).getText();
-		checkpoints.check(loginHeaderExpected, loginHeaderActual, "Login Page Header Text");
+		/* String loginHeaderExpected = loginHeaderFooter[dataRowFromSheet][loginHeaderFooterColumn.get("Header")];
+		String loginHeaderActual = loginPage.header..getText();
+		checkpoints.check(loginHeaderExpected, loginHeaderActual, "Login Page Header Text"); */
 		
 		String loginFooterExpected = loginHeaderFooter[dataRowFromSheet][loginHeaderFooterColumn.get("Footer")];
-		String loginFooterActual = Browser.driver.findElement(By.xpath(prop.getProperty("footer"))).getText();
+		String loginFooterActual = loginPage.footer.getText();
 		checkpoints.check(loginFooterExpected, loginFooterActual, "Login Page Footer Text");
 		
 		checkpoints.assertCheck();
@@ -140,9 +144,7 @@ public class Login {
 		siteURL = site[dataRowFromSheet][siteColumn.get("Site URL")];
 		Browser.launchSite(siteURL);
 		
-		prop = Util.getPageProperties("LoginPage");
-		
-		String expectedTitle = prop.getProperty("loginPageTitle");
+		String expectedTitle = "Reviewer Connect - Login";
 		String actualTitle = Browser.driver.getTitle();
 		checkpoints.check(expectedTitle, actualTitle, "Login Page Title");		
 		
@@ -153,26 +155,26 @@ public class Login {
 		String defaultPasswordTextExpected = loginSuccessful[dataRowFromSheet][loginSuccessfulColumn.get("Default Password Text")];
 		
 		// Check placeholder text in User ID field
-		String defaultUserIDTextActual = Browser.driver.findElement(By.id(prop.getProperty("userIDField"))).getAttribute("placeholder");
+		String defaultUserIDTextActual = loginPage.userIDField.getAttribute("placeholder");
 		checkpoints.check(defaultUserIDTextExpected, defaultUserIDTextActual, "Default User ID Text");
 		
 		// Check placeholder text in Password field
-		String defaultPasswordTextActual = Browser.driver.findElement(By.id(prop.getProperty("passwordField"))).getAttribute("placeholder");
+		String defaultPasswordTextActual = loginPage.passwordField.getAttribute("placeholder");
 		checkpoints.check(defaultPasswordTextExpected, defaultPasswordTextActual, "Default Password Text");
 
 		// Enter User ID and check text appears in User ID field
-		Browser.driver.findElement(By.id(prop.getProperty("userIDField"))).sendKeys(userIDExpected);
-		String userIDActual = Browser.driver.findElement(By.id(prop.getProperty("userIDField"))).getAttribute("value");
+		loginPage.userIDField.sendKeys(userIDExpected);
+		String userIDActual = loginPage.userIDField.getAttribute("value");
 		checkpoints.check(userIDExpected, userIDActual, "User ID");
 				
 		// Enter Password and check text appears in Password field
-		Browser.driver.findElement(By.id(prop.getProperty("passwordField"))).sendKeys(passwordExpected);
-		String passwordActual = Browser.driver.findElement(By.id(prop.getProperty("passwordField"))).getAttribute("value");
+		loginPage.passwordField.sendKeys(passwordExpected);
+		String passwordActual = loginPage.passwordField.getAttribute("value");
 		checkpoints.check(passwordExpected, passwordActual, "Password");
 		
 		// Click Login button
-		Browser.driver.findElement(By.xpath(prop.getProperty("loginButton"))).click();
-		WebElement loginImgVisible = wait.until(ExpectedConditions.visibilityOfElementLocated(By.className(prop.getProperty("dash-img"))));
+		loginPage.loginButton.click();
+		WebElement loginImgVisible = wait.until(ExpectedConditions.presenceOfElementLocated(By.className(prop.getProperty("dash-img"))));
 		
 		prop = Util.getPageProperties("DashboardPage");
 		
@@ -195,7 +197,7 @@ public class Login {
 		
 		String userIDRequiredExpected = missingUserID[dataRowFromSheet][missingUserIDColumn.get("Missing User ID Text")];
 		
-		Browser.driver.findElement(By.xpath(prop.getProperty("loginButton"))).click();
+		Browser.driver.findElement(By.id(prop.getProperty("loginButton"))).click();
 		String userIDRequiredActual = Browser.driver.findElement(By.className(prop.getProperty("userIDRequired"))).getText();
 		checkpoints.check(userIDRequiredExpected, userIDRequiredActual, "Missing User ID Text");
 		
@@ -215,7 +217,7 @@ public class Login {
 		String userID = incorrectUserID[dataRowFromSheet][incorrectUserIDColumn.get("User ID")];
 		
 		Browser.driver.findElement(By.id(prop.getProperty("userIDField"))).sendKeys(userID);
-		Browser.driver.findElement(By.xpath(prop.getProperty("loginButton"))).click();
+		Browser.driver.findElement(By.id(prop.getProperty("loginButton"))).click();
 		
 		WebElement incorrectUserIDPassword = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(prop.getProperty("incorrectUserIDPassword"))));
 		
@@ -245,11 +247,11 @@ public class Login {
 		
 		// Check Header and Footer text
 		String forgotPasswordHeaderExpected1 = forgotPasswordHeaderFooter[dataRowFromSheet][forgotPasswordHeaderFooterColumn.get("Header Text 1")];
-		String forgotPasswordHeaderActual1 = Browser.driver.findElement(By.className(prop.getProperty("header1"))).getText();
+		String forgotPasswordHeaderActual1 = Browser.driver.findElement(By.id(prop.getProperty("header1"))).getText();
 		checkpoints.check(forgotPasswordHeaderExpected1, forgotPasswordHeaderActual1, "Forgot Password Page Header 1 Text");
 		
 		String forgotPasswordHeaderExpected2 = forgotPasswordHeaderFooter[dataRowFromSheet][forgotPasswordHeaderFooterColumn.get("Header Text 2")];
-		String forgotPasswordHeaderActual2 = Browser.driver.findElement(By.xpath(prop.getProperty("header2"))).getText();
+		String forgotPasswordHeaderActual2 = Browser.driver.findElement(By.id(prop.getProperty("header2"))).getText();
 		checkpoints.check(forgotPasswordHeaderExpected2, forgotPasswordHeaderActual2, "Forgot Password Page Header 2 Text");
 		
 		String forgotPasswordFooterExpected = forgotPasswordHeaderFooter[dataRowFromSheet][forgotPasswordHeaderFooterColumn.get("Footer Text")];
@@ -261,12 +263,12 @@ public class Login {
 		String defaultEmailAddressTextActual = Browser.driver.findElement(By.id(prop.getProperty("emailField"))).getAttribute("placeholder");
 		checkpoints.check(defaultEmailAddressTextExpected, defaultEmailAddressTextActual, "Default E-Mail Address Text");
 		
-		/* Send e-mail address for forgotten password
+		// Send e-mail address for forgotten password
 		String forgotPasswordEmailExpected = forgotPasswordEmail[dataRowFromSheet][forgotPasswordEmailColumn.get("E-Mail Address")];
 		Browser.driver.findElement(By.id(prop.getProperty("emailField"))).sendKeys(forgotPasswordEmailExpected);
 		String forgotPasswordEmailActual = Browser.driver.findElement(By.id(prop.getProperty("emailField"))).getAttribute("value");
 		checkpoints.check(forgotPasswordEmailExpected, forgotPasswordEmailActual, "Forgot Password E-Mail Address");
-		Browser.driver.findElement(By.className(prop.getProperty("sendButton"))).click();
+		Browser.driver.findElement(By.id(prop.getProperty("sendButton"))).click();
 		
 		WebElement passwordSent = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(prop.getProperty("okayButton"))));
 		
@@ -279,23 +281,8 @@ public class Login {
 		WebElement okayButton = Browser.driver.findElement(By.xpath((prop.getProperty("okayButton"))));
 		exec.executeScript("arguments[0].click()", okayButton);
 		prop = Util.getPageProperties("LoginPage");
-		WebElement loginPage = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(prop.getProperty("loginButton"))));
-		
-		// Log into e-mail account and confirm e-mail received
-		String provider = "gmail";
-		WebMail.launchWebMail(provider);
-		emailFieldVisible = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("Email")));
-		
-		String emailSubjectTextExpected = forgotPasswordEmail[dataRowFromSheet][forgotPasswordEmailColumn.get("Forgot Password E-Mail Subject Text")];
-		WebMail.webMailLogin(provider, "me.automaton", "microedge123");
-		WebMail.webMailOpenMessage(provider, emailSubjectTextExpected);
-		
-		// Check text of e-mail
-		String emailBodyTextExpected = forgotPasswordEmail[dataRowFromSheet][forgotPasswordEmailColumn.get("Forgot Password E-Mail Body Text")];
-		String emailBodyTextActual = WebMail.webMailReadEmail(provider);
-		checkpoints.check(emailBodyTextExpected, emailBodyTextActual, "Forgot Password E-Mail Body Text");
-		WebMail.webMailLogout(provider); */
-		
+		WebElement loginPage = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id(prop.getProperty("loginButton"))));
+			
 		checkpoints.assertCheck();
 	}	
 }
