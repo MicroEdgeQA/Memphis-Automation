@@ -3,7 +3,7 @@ package common;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.Hashtable;
+import java.util.HashMap;
 
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
@@ -20,7 +20,7 @@ public class DataDriver
 	public static int numRows;
 	
 	// Hash to store column names in data sheets
-	public static Hashtable<String, Integer> columnNamesHash = new Hashtable<String, Integer>();
+	public static HashMap<String, Integer> columnNamesHash = null;
 	
 	// Location of the data sheet containing test data	
 	public static void assignDataSource(String dataLocation, String testName)
@@ -125,8 +125,10 @@ public class DataDriver
 	// Data in a sheet can be referenced through a row number (which will be a predefined value
 	// declared in the class or the iteration row number if the TestNG DataProvider is used) and a
 	// column name called via "column.get("Column Name")" defined in the hash table.
-	public static Hashtable<String, Integer> getColumnNamesFromSheet(String dataSheet)
+	public static HashMap<String, Integer> getColumnNamesFromSheet(String dataSheet)
 	{
+		columnNamesHash = new HashMap<String, Integer>();
+		
 		String[] columnNames = DataDriver.getDataColumns(dataSheet);
 		
 		int numDataColumns = columnNames.length;

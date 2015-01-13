@@ -1,7 +1,7 @@
 package tests;
 
 import java.util.Arrays;
-import java.util.Hashtable;
+import java.util.HashMap;
 import java.util.Properties;
 
 import org.openqa.selenium.By;
@@ -21,7 +21,6 @@ import common.Browser;
 import common.Checkpoints;
 import common.DataDriver;
 import common.Util;
-import common.WebMail;
 
 public class Login
 {		
@@ -31,25 +30,25 @@ public class Login
 	private Checkpoints checkpoints = new Checkpoints();
 	
 	String [][] site;
-	Hashtable<String, Integer> siteColumn;
+	HashMap<String, Integer> siteColumn;
 	
 	String[][] loginHeaderFooter;
-	Hashtable<String, Integer> loginHeaderFooterColumn;
+	HashMap<String, Integer> loginHeaderFooterColumn;
 	
 	String[][] loginSuccessful;
-	Hashtable<String, Integer> loginSuccessfulColumn;
+	HashMap<String, Integer> loginSuccessfulColumn;
 	
 	String[][] missingUserID;
-	Hashtable<String, Integer> missingUserIDColumn;
+	HashMap<String, Integer> missingUserIDColumn;
 	
 	String[][] incorrectUserID;
-	Hashtable<String, Integer> incorrectUserIDColumn;
+	HashMap<String, Integer> incorrectUserIDColumn;
 	
 	String[][] forgotPasswordHeaderFooter;
-	Hashtable<String, Integer> forgotPasswordHeaderFooterColumn;
+	HashMap<String, Integer> forgotPasswordHeaderFooterColumn;
 	
 	String[][] forgotPasswordEmail;
-	Hashtable<String, Integer> forgotPasswordEmailColumn;
+	HashMap<String, Integer> forgotPasswordEmailColumn;
 	
 	private void getData()
 	{
